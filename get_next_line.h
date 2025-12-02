@@ -6,7 +6,7 @@
 /*   By: bclairot <bclairot@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 18:36:32 by bclairot          #+#    #+#             */
-/*   Updated: 2025/11/21 13:52:38 by bclairot         ###   ########.fr       */
+/*   Updated: 2025/12/02 13:00:23 by bclairot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ int		get_return(char *str);
 char	*fuse_two_str(char *str, char *buffer);
 void	init_zero(char *array, int length);
 int		ft_strlen(const char *s);
-char	*free_and_return(char *rslt);
+char	*free_and_return(char *rslt, char *buffer);
 
 #endif

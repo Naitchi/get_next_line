@@ -6,7 +6,7 @@
 /*   By: bclairot <bclairot@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 15:06:49 by bclairot          #+#    #+#             */
-/*   Updated: 2025/11/21 13:54:25 by bclairot         ###   ########.fr       */
+/*   Updated: 2025/12/02 13:11:57 by bclairot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,12 @@ void	init_zero(char *array, int length)
 {
 	int	i;
 
-	i = -1;
-	while (++i < length)
+	i = 0;
+	while (i < length)
+	{
 		array[i] = '\0';
+		i++;
+	}
 }
 
 int	ft_strlen(const char *s)
@@ -45,8 +48,9 @@ int	get_return(char *str)
 	return (-1);
 }
 
-char	*free_and_return(char *rslt)
+char	*free_and_return(char *rslt, char *buffer)
 {
 	free(rslt);
+	buffer[0] = '\0';
 	return (NULL);
 }

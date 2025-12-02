@@ -6,21 +6,19 @@
 /*   By: bclairot <bclairot@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 18:36:32 by bclairot          #+#    #+#             */
-/*   Updated: 2025/11/21 13:55:01 by bclairot         ###   ########.fr       */
+/*   Updated: 2025/12/02 14:11:57 by bclairot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
-void	get_new_line(int fd, char *buffer, int *trigger)
+void	get_new_line(int fd, char *buffer, int *bytes)
 {
-	int	bytes;
-
-	bytes = 0;
 	init_zero(buffer, BUFFER_SIZE + 1);
-	bytes = read(fd, buffer, BUFFER_SIZE);
-	if (bytes < BUFFER_SIZE)
-		*trigger = 1;
+	*bytes = read(fd, buffer, BUFFER_SIZE);
+	if (*bytes < 0)
+		buffer[0] = 0;
 }
 
 char	*fuse_two_str(char *str, char *buffer)
@@ -28,17 +26,16 @@ char	*fuse_two_str(char *str, char *buffer)
 	char	*rslt;
 	int		i;
 	int		j;
+	int		len_str;
 
-	i = 0;
+	len_str = ft_strlen(str);
+	i = -1;
 	j = 0;
-	rslt = malloc(sizeof(char) * (ft_strlen(str) + ft_strlen(buffer) + 2));
+	rslt = malloc(sizeof(char) * (len_str + ft_strlen(buffer) + 2));
 	if (!rslt)
 		return (NULL);
-	while (i < ft_strlen(str))
-	{
+	while (++i < len_str)
 		rslt[i] = str[i];
-		i++;
-	}
 	free(str);
 	while (buffer[j] && buffer[j] != '\n')
 	{
@@ -54,24 +51,23 @@ char	*fuse_two_str(char *str, char *buffer)
 char	*get_next_line(int fd)
 {
 	static char	buffer[BUFFER_SIZE + 1];
-	static int	trigger;
+	static int	bytes;
 	char		*rslt;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	rslt = NULL;
-	while (get_return(buffer) == -1)
+	bytes = 1;
+	while (get_return(buffer) == -1 && bytes)
 	{
 		rslt = fuse_two_str(rslt, buffer);
-		get_new_line(fd, buffer, &trigger);
-		if (trigger == 1 && buffer[0])
-			break ;
-		if (!buffer[0] && rslt[0])
-			break ;
-		if (trigger == 1)
-			return (free_and_return(rslt));
+		get_new_line(fd, buffer, &bytes);
+		if (bytes < 0)
+			return (free_and_return(rslt, buffer));
 	}
 	rslt = fuse_two_str(rslt, buffer);
+	if (bytes == 0 && (!rslt || (rslt && !rslt[0])) && !buffer[0])
+		return (free_and_return(rslt, buffer));
 	if (get_return(buffer) != -1)
 		strdup_from(buffer, buffer, get_return(buffer) + 1);
 	else
@@ -98,14 +94,15 @@ void	strdup_from(char *dest, char *src, int offset)
 // 	char *str;
 // 	int fd;
 
-// 	file_name = "hello.txt";
+// 	file_name = "empty.txt";
 // 	fd = open(file_name, O_RDONLY);
 // 	if (fd == -1)
 // 		return (1);
 // 	str = "";
 // 	while (str)
 // 	{
-// 		str = get_next_line(fd);
+// 		// printf("test\n");
+// 		str = get_next_line(1000);
 // 		printf("%s", str);
 // 		free(str);
 // 	}
