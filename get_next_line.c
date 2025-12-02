@@ -6,12 +6,11 @@
 /*   By: bclairot <bclairot@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 18:36:32 by bclairot          #+#    #+#             */
-/*   Updated: 2025/12/02 14:11:57 by bclairot         ###   ########.fr       */
+/*   Updated: 2025/12/02 14:18:45 by bclairot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 void	get_new_line(int fd, char *buffer, int *bytes)
 {
