@@ -6,7 +6,7 @@
 /*   By: bclairot <bclairot@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 18:36:32 by bclairot          #+#    #+#             */
-/*   Updated: 2025/12/02 13:00:23 by bclairot         ###   ########.fr       */
+/*   Updated: 2025/12/02 16:36:21 by bclairot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #  define BUFFER_SIZE 10000
 # endif
 
-void	get_new_line(int fd, char *buffer, int *trigger);
+void	get_new_line(int fd, char *buffer, int *bytes);
 char	*get_next_line(int fd);
 void	strdup_from(char *dest, char *src, int offset);
 int		get_return(char *str);
