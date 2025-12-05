@@ -6,7 +6,7 @@
 /*   By: bclairot <bclairot@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 18:36:32 by bclairot          #+#    #+#             */
-/*   Updated: 2025/12/02 14:18:45 by bclairot         ###   ########.fr       */
+/*   Updated: 2025/12/05 12:25:40 by bclairot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,19 @@ char	*get_next_line(int fd)
 	while (get_return(buffer) == -1 && bytes)
 	{
 		rslt = fuse_two_str(rslt, buffer);
+		if (!rslt)
+			return (NULL);
 		get_new_line(fd, buffer, &bytes);
 		if (bytes < 0)
 			return (free_and_return(rslt, buffer));
 	}
 	rslt = fuse_two_str(rslt, buffer);
+	if (!rslt)
+		return (NULL);
 	if (bytes == 0 && (!rslt || (rslt && !rslt[0])) && !buffer[0])
 		return (free_and_return(rslt, buffer));
 	if (get_return(buffer) != -1)
 		strdup_from(buffer, buffer, get_return(buffer) + 1);
-	else
-		init_zero(buffer, BUFFER_SIZE + 1);
 	return (rslt);
 }
 
@@ -87,23 +89,23 @@ void	strdup_from(char *dest, char *src, int offset)
 	dest[i] = '\0';
 }
 
-// int	main(void)
-// {
-// 	char *file_name;
-// 	char *str;
-// 	int fd;
+int	main(void)
+{
+	char *file_name;
+	char *str;
+	int fd;
 
-// 	file_name = "empty.txt";
-// 	fd = open(file_name, O_RDONLY);
-// 	if (fd == -1)
-// 		return (1);
-// 	str = "";
-// 	while (str)
-// 	{
-// 		// printf("test\n");
-// 		str = get_next_line(1000);
-// 		printf("%s", str);
-// 		free(str);
-// 	}
-// 	return (0);
-// }
+	file_name = "empty.txt";
+	fd = open(file_name, O_RDONLY);
+	if (fd == -1)
+		return (1);
+	str = "";
+	while (str)
+	{
+		// printf("test\n");
+		str = get_next_line(fd);
+		printf("%s", str);
+		free(str);
+	}
+	return (0);
+}
